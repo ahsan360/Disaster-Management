@@ -1,23 +1,34 @@
 "use client";
 import { Button, Form, Input } from "antd";
 import React from "react";
+import axios from "axios";
 
-const Login = () => {
+const Signup = () => {
   const [form] = Form.useForm();
+
   const onFinish = async (values: any) => {
     console.log("🚀 ~ onFinish ~ values:", values);
-    form.resetFields();
+    const res = await axios.post(
+      "http://127.0.0.1:8000/server/signup/",
+      values,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         {/* Headline */}
         <h1 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
-          Login to Your Account
+          Sign Up
         </h1>
         <Form
           form={form}
-          name="basic"
+          name="signup"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           style={{ maxWidth: 600 }}
@@ -25,26 +36,9 @@ const Login = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="First Name"
-            name="first_name"
-            rules={[
-              {
-                required: true,
-                message: "Please input your first name!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Last Name"
-            name="last_name"
-            rules={[
-              {
-                required: true,
-                message: "Please input your last name!",
-              },
-            ]}
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: "Please input your username!" }]}
           >
             <Input />
           </Form.Item>
@@ -52,14 +46,8 @@ const Login = () => {
             label="Email"
             name="email"
             rules={[
-              {
-                type: "email",
-                message: "The input is not a valid E-mail!",
-              },
-              {
-                required: true,
-                message: "Please input your email!",
-              },
+              { type: "email", message: "The input is not a valid E-mail!" },
+              { required: true, message: "Please input your email!" },
             ]}
           >
             <Input />
@@ -67,8 +55,90 @@ const Login = () => {
 
           <Form.Item
             label="Password"
-            name="password"
+            name="password1"
             rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            label="Confirm Password"
+            name="password2"
+            rules={[
+              { required: true, message: "Please confirm your password!" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password1") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("The two passwords do not match!")
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            label="Age"
+            name="age"
+            rules={[{ required: true, message: "Please input your age!" }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+
+          <Form.Item
+            label="Phone Number"
+            name="phon_number"
+            rules={[
+              { required: true, message: "Please input your phone number!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Avprola Status"
+            name="avprola_status"
+            rules={[
+              {message: "Please input your avprola status!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Crisis"
+            name="crisis"
+            rules={[{  message: "Please input the crisis!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Location"
+            name="location"
+            rules={[{  message: "Please input your location!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Task"
+            name="task"
+            rules={[{  message: "Please input your task!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Active Status"
+            name="active_status"
+            rules={[
+              {  message: "Please input your active status!" },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -84,4 +154,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

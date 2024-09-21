@@ -1,11 +1,30 @@
 "use client";
 import { Button, Form, Input } from "antd";
 import React from "react";
+import { s } from "../notification/page";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
+axios.defaults.withCredentials = true;
 
 const Login = () => {
+  const router = useRouter();
   const [form] = Form.useForm();
   const onFinish = async (values: any) => {
-    console.log("🚀 ~ onFinish ~ values:", values);
+    console.log("🚀 ~ onFinish ~ values:", values)
+    const res = await axios.post(
+      "http://127.0.0.1:8000/server/signin/",
+      {
+        username: values.username,
+        password: values.password,
+      }
+    );
+    if (res) 
+    {
+      s("Login Successful");
+      router.push("/");
+    }
     form.resetFields();
   };
 
@@ -26,20 +45,7 @@ const Login = () => {
           onFinish={onFinish}
           autoComplete="off"
         >
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              {
-                type: "email",
-                message: "The input is not a valid E-mail!",
-              },
-              {
-                required: true,
-                message: "Please input your email!",
-              },
-            ]}
-          >
+          <Form.Item label="Username" name="username">
             <Input className="border-gray-300 rounded-md shadow-sm" />
           </Form.Item>
 

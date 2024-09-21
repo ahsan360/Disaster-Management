@@ -28,7 +28,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
+# Application definition 
+# 
+# myproject/settings.py
+
+#  # Replace 'yourapp' with the actual app name
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,7 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'server',
     'corsheaders',
+    'rest_framework',
 ]
+
+# settings.py
+SESSION_COOKIE_SAMESITE = "None" 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,6 +81,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.wsgi.application'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Store sessions in the database
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -93,6 +102,9 @@ DATABASES = {
         "PORT": "3306",
     }
 }
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+]
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
@@ -101,7 +113,8 @@ CORS_ALLOWED_ORIGINS = [
 
 # Allow credentials (cookies, authorization headers)
 CORS_ALLOW_CREDENTIALS = True
-
+CORS_ALLOW_ALL_ORIGINS = True
+SESSION_COOKIE_SECURE = True
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
